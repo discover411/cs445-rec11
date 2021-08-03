@@ -28,6 +28,16 @@ public class MapLandmarks extends HashingDictionary<Tuple, String>{
 		public void addLandmark(String value, double firstComponent, double secondComponent){
 			// TODO: implement this method
 			// to add a pair of a landmark and its key (which has 2 components)
+			Tuple newTuple = new Tuple(firstComponent, secondComponent);
+			super.add(newTuple, value);
+			
+			
+			//Note: Tuple is a wrapper class that has simple getters and setters
+					//it's used for convience
+					//we need to combine longitude and lattidue
+					//so, we overwrite the hashCode() in the Tuple.java class file! 
+			
+			
 		}
 
 		/**
@@ -48,6 +58,24 @@ public class MapLandmarks extends HashingDictionary<Tuple, String>{
 		 */
 		public void removeLandmark(String value){
 			// TODO: implement this method using itertors to remove a landmark
+			Iterator<Tuple> iter = super.iterator(); // make an iterator object that has all the keys 
+				//we get a key iterator
+			boolean foundValue = false;
+			
+			while( !foundValue && iter.hasNext() ){
+				Tuple currKey = iter.next();
+				if(super.getValue(currKey).equals(value)) {
+					super.remove(currKey);
+					foundValue = true;
+				}
+				
+			}
+			
+			/*
+			basicallywe are iterating through this dictionary, using super.remove, it removes the key !
+			 So iter.hasNext() will throw an error;
+			so we need !foundValue in the for loop check (It's short circuiting!) 
+			*/
 		}
 
 		/**
@@ -77,5 +105,17 @@ public class MapLandmarks extends HashingDictionary<Tuple, String>{
 		 */
 		public void printAllLandmarks(){
 			// TODO: implement this method to print all landmarks in your dictionary
+			Iterator<Tuple> iter = super.iterator();
+			System.out.println("Landmarks: \n ");
+			while(iter.hasNext()) {
+				Tuple currKey = iter.next();
+				String currValue = super.getValue(currKey);
+				System.out.println(currValue + " \t at Coordinates(" + currKey.getFirstComponent() + ", " 
+				+ currKey.getSecondComponent() + ")");
+				
+			}
+			
+			
+			
 		}
 }
